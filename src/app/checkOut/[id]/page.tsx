@@ -14,6 +14,7 @@ type CartItem = {
       restaurantName: string;
     };
     price: number;
+    image:string;
   };
   quantity: number;
 };
@@ -30,6 +31,7 @@ export default function CheckOut() {
 
       if (cart?.data?.cart?.items) {
         setItems(cart.data.cart.items);
+        console.log('sdbbfudbofiabdoifboadifoidbfoibadfoidbfodiofbaodibfiodbfoaikdbfoakdbif',cart.data.cart.items);
         setTotalAmount(cart.data.totalAmount);
         setId(cart.data.cart.id);
       }
@@ -42,10 +44,10 @@ export default function CheckOut() {
   console.log(id);
   return (
     <div className="flex justify-between">
-        <div className="w-1/2 ml-20">
+        <div className="w-2/3 ml-20">
             <OrderInfo/>
         </div>
-      {items.length > 0 && <div className="border border-gray-600 rounded-b-lg  pl-2 pb-5 mr-10">
+      {items.length > 0 && <div className="border border-gray-600 rounded-b-lg  pl-2 pb-5 mr-10 h-fit">
         {items.map((item, index) => (
           <div key={index} className="border-b flex gap-8 justify-between">
             <div className=" pb-3 mb-3">

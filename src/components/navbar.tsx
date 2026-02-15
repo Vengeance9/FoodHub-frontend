@@ -11,7 +11,7 @@ import { authClient } from "@/lib/auth";
 import Cart from "./Cart";
 import { useRouter } from "next/navigation";
 import { Button } from "components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Menu,
   X,
@@ -22,10 +22,16 @@ import {
   Home,
   ChevronDown,
 } from "lucide-react";
+import { authService } from "@/services/auth.service";
+
 
 export default function Navbar() {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [serverSession, setServerSession] = useState<any>(null);
+
+ 
+
 
   const signOut = async () => {
     await authClient.signOut({
@@ -77,7 +83,7 @@ export default function Navbar() {
               {data?.user && (
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    {data.user.role === "PROVIDER" ? (
+                    {data.user.role  === "PROVIDER" ? (
                       <Link
                         href={`/providerProfile/${data.user.id}`}
                         className="flex items-center gap-1 text-gray-600 hover:text-yellow-600 transition-colors"
@@ -99,7 +105,7 @@ export default function Navbar() {
               )}
 
               {/* Admin Link */}
-              {data?.user?.role === "ADMIN" && (
+              {data?.user.role === "ADMIN" && (
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link
@@ -216,7 +222,7 @@ export default function Navbar() {
               )}
 
               {/* Admin Link */}
-              {data?.user?.role === "ADMIN" && (
+              {data?.user.role === "ADMIN" && (
                 <Link
                   href="/admin"
                   className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 rounded-lg transition-colors"
