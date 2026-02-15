@@ -11,7 +11,7 @@ export const categoryService = {
           return data.categories;
         } catch (e: any) {
           console.error(e);
-          throw new Error(e.message);
+         // throw new Error(e.message);
         }
     },
 
@@ -25,7 +25,7 @@ export const categoryService = {
           return data;
         } catch (e: any) {
           console.error(e);
-          throw new Error(e.message);
+         // throw new Error(e.message);
         }
     },
 
@@ -39,7 +39,7 @@ export const categoryService = {
           return data;
         } catch (e: any) {
           console.error(e);
-          throw new Error(e.message);
+          //throw new Error(e.message);
         }
     },
     

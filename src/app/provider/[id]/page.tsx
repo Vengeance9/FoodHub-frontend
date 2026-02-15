@@ -4,16 +4,7 @@ import { providerServices } from "@/services/provider.service";
 import React from "react";
 import { MapPin, Clock, Star as StarIcon } from "lucide-react";
 
-export async function generateStaticParams() {
-  const data = await providerServices.getProviders();
 
-  if (!Array.isArray(data.data)) console.log("not data", data);
-  else console.log("It is array");
-
-  console.log(data);
-
-  return data.data.map((provider: any) => ({ id: provider.id.toString() }));
-}
 
 export default async function Provider({
   params,

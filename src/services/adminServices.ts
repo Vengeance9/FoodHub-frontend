@@ -21,11 +21,12 @@ export const adminServices = {
                 const data = await res.json();
                 return data;
             }else{
-                throw new Error("Failed to fetch users");
+              console.log("Failed to fetch users", res.statusText);
+                //throw new Error("Failed to fetch users");
             }
         } catch (error) {
             console.error(error);
-            throw error;
+            //throw error;
         }
     },
     getAllOrders:async(params:{page:number,limit:number})=>{
@@ -50,7 +51,8 @@ export const adminServices = {
                 const data = await res.json();
                 return data;
             }else{
-                throw new Error("Failed to fetch orders");
+                console.log("Failed to fetch orders", res.statusText);
+              //  throw new Error("Failed to fetch orders");
             }
         } catch (error) {
             console.error(error);

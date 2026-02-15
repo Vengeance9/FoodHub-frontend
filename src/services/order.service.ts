@@ -20,7 +20,7 @@ export const orderService = {
             return data;
             } catch (e: any) {
             console.error(e);
-            throw new Error(e.message);
+            //throw new Error(e.message);
             }
     },
 
@@ -41,7 +41,7 @@ export const orderService = {
 
         }catch(e:any){
             console.error(e);
-            throw new Error(e.message);
+            //throw new Error(e.message);
         }
     },
     ClearCart:async function(){
