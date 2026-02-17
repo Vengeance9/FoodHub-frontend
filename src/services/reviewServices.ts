@@ -1,4 +1,4 @@
-const API_URL = process.env.API_URL;
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const reviewServices = {
   reviewProvider: async (
     providerId: string,
@@ -15,7 +15,7 @@ export const reviewServices = {
         comment
       );
       const response = await fetch(
-        `${API_URL}/review/provider/${providerId}`,
+        `${NEXT_PUBLIC_API_URL}/review/provider/${providerId}`,
         {
           method: "POST",
           credentials: "include",
@@ -40,7 +40,7 @@ export const reviewServices = {
   getMyReviews: async (providerId: string) => {
     try {
       const response = await fetch(
-        `${API_URL}/review/my_reviews/${providerId}`,
+        `${NEXT_PUBLIC_API_URL}/review/my_reviews/${providerId}`,
         {
           method: "GET",
           credentials: "include",
@@ -61,7 +61,7 @@ export const reviewServices = {
   getAllReviews: async (providerId: string) => {
     try {
       const response = await fetch(
-        `${API_URL}/review/all_reviews/${providerId}`,
+        `${NEXT_PUBLIC_API_URL}/review/all_reviews/${providerId}`,
         {
           method: "GET",
           credentials: "include",

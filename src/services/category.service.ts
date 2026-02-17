@@ -1,48 +1,51 @@
-
-const API_URL=process.env.API_URL
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const categoryService = {
-    getCategories:async function(){
-        try {
-          const response = await fetch(`${API_URL}/categories`);
-          if (!response.ok) {
-            throw new Error("Failed to fetch categories");
-          }
-          const data = await response.json();
-          return data.categories;
-        } catch (e: any) {
-          console.error(e);
-         // throw new Error(e.message);
-        }
-    },
+  getCategories: async function () {
+    try {
+      const response = await fetch(`${NEXT_PUBLIC_API_URL}/categories`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch categories");
+      }
+      const data = await response.json();
+      return data.categories;
+    } catch (e: any) {
+      console.error(e);
+      // throw new Error(e.message);
+    }
+  },
 
-    getCategoryProviders:async function(name:string){
-        try {
-          const response = await fetch(`${API_URL}/categories/providers/${name}`);
-          if (!response.ok) {
-            throw new Error("Failed to fetch category Providers");
-          }
-          const data = await response.json();
-          return data;
-        } catch (e: any) {
-          console.error(e);
-         // throw new Error(e.message);
-        }
-    },
+  getCategoryProviders: async function (name: string) {
+    try {
+      const response = await fetch(
+        `${NEXT_PUBLIC_API_URL}/categories/providers/${name}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch category Providers");
+      }
+      const data = await response.json();
+      return data;
+    } catch (e: any) {
+      console.error(e);
+      // throw new Error(e.message);
+    }
+  },
 
-    getCategoryMeals:async function(category:string,providerId:string){
-        try {
-          const response = await fetch(`${API_URL}/categories/providers/${category}/${providerId}/meals`);
-          if (!response.ok) {
-            throw new Error("Failed to fetch category meals");
-          }
-          const data = await response.json();
-          return data;
-        } catch (e: any) {
-          console.error(e);
-          //throw new Error(e.message);
-        }
-    },
-    
+  getCategoryMeals: async function (category: string, providerId: string) {
+    try {
+      const response = await fetch(
+        `${NEXT_PUBLIC_API_URL}/categories/providers/${category}/${providerId}/meals`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch category meals");
+      }
+      const data = await response.json();
+      return data;
+    } catch (e: any) {
+      console.error(e);
+      //throw new Error(e.message);
+    }
+  },
+
   getMeals: async (params: {
     search?: string;
     category?: string;
@@ -61,20 +64,16 @@ export const categoryService = {
       if (value) query.append(key, value);
     });
 
-    const res = await fetch(`${API_URL}/meal?${query.toString()}`,{
-      cache:'no-store',
-    }
-  
-  );
+    const res = await fetch(`${NEXT_PUBLIC_API_URL}/meal?${query.toString()}`, {
+      cache: "no-store",
+    });
 
     // if (!res.ok) {
     //   console.log(res.json())
     //   throw new Error("Failed to fetch meals");
     // }
-    const data = await res.json()
-    console.log('data from category service',data)
-    return data
+    const data = await res.json();
+    console.log("data from category service", data);
+    return data;
   },
-
-}
-
+};
