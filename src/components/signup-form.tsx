@@ -51,7 +51,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         },
         onError: (ctx) => {
           // display the error message
-          alert(ctx.error.message);
+          toast(ctx.error.message);
         },
       }
     );

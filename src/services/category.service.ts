@@ -1,9 +1,9 @@
 
-
+const API_URL=process.env.API_URL
 export const categoryService = {
     getCategories:async function(){
         try {
-          const response = await fetch("http://localhost:3000/categories");
+          const response = await fetch(`${API_URL}/categories`);
           if (!response.ok) {
             throw new Error("Failed to fetch categories");
           }
@@ -17,7 +17,7 @@ export const categoryService = {
 
     getCategoryProviders:async function(name:string){
         try {
-          const response = await fetch(`http://localhost:3000/categories/providers/${name}`);
+          const response = await fetch(`${API_URL}/categories/providers/${name}`);
           if (!response.ok) {
             throw new Error("Failed to fetch category Providers");
           }
@@ -31,7 +31,7 @@ export const categoryService = {
 
     getCategoryMeals:async function(category:string,providerId:string){
         try {
-          const response = await fetch(`http://localhost:3000/categories/providers/${category}/${providerId}/meals`);
+          const response = await fetch(`${API_URL}/categories/providers/${category}/${providerId}/meals`);
           if (!response.ok) {
             throw new Error("Failed to fetch category meals");
           }
@@ -61,7 +61,7 @@ export const categoryService = {
       if (value) query.append(key, value);
     });
 
-    const res = await fetch(`http://localhost:3000/meal?${query.toString()}`,{
+    const res = await fetch(`${API_URL}/meal?${query.toString()}`,{
       cache:'no-store',
     }
   

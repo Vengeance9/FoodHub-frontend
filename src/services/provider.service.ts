@@ -1,11 +1,12 @@
 import { get } from "http";
 import { register } from "module";
+const API_URL = process.env.API_URL;
 
 export const providerServices:any = {
 
   register:async(providerData:FormData)=>{
         try {
-          const response = await fetch("http://localhost:3000/provider/register",{
+          const response = await fetch(`${API_URL}/provider/register`,{
             method:"POST",
             credentials:'include',
             body:providerData,
@@ -21,7 +22,9 @@ export const providerServices:any = {
   },
     getProviderById:async(id:string)=>{
         try {
-          const response = await fetch(`http://localhost:3000/meal/providers/${id}`);
+          const response = await fetch(`${API_URL}/meal/providers/${id}`,{
+            next: { revalidate: 60 },
+          });
           if (!response.ok) {
             throw new Error("Failed to fetch provider details");
           }
@@ -36,9 +39,11 @@ export const providerServices:any = {
 
     getProviders:async()=>{
         try{
-            const response = await fetch("http://localhost:3000/meal/providers",{
+            const response = await fetch(`${API_URL}/meal/providers`,{
                 method:"GET",
-                credentials:'include'
+                credentials:'include',
+                next: { revalidate: 60 },
+
             });
             
             const data = await response.json();
@@ -57,10 +62,11 @@ export const providerServices:any = {
            params.append("searchTerm", searchTerm);
          }
           const response = await fetch(
-            `http://localhost:3000/provider/my_providers?${params.toString()}`,
+            `${API_URL}/provider/my_providers?${params.toString()}`,
             {
               method: "GET",
               credentials: "include",
+              cache: "no-store",
             }
           );
           if(!response.ok){
@@ -76,7 +82,7 @@ export const providerServices:any = {
     },
     updateProvider:async(providerId:string, providerData:FormData)=>{
       try{
-        const response = await fetch(`http://localhost:3000/provider/update_provider/${providerId}`,{
+        const response = await fetch(`${API_URL}/provider/update_provider/${providerId}`,{
           method:"PUT",
           credentials:'include',
           body:providerData
@@ -94,7 +100,7 @@ export const providerServices:any = {
     },
     CreateMeals:async(mealData:FormData,id:string)=>{
       try{
-        const response = await fetch(`http://localhost:3000/provider/meals/${id}`,{
+        const response = await fetch(`${API_URL}/provider/meals/${id}`,{
           method:"POST",
           credentials:'include',
           body:mealData
@@ -111,9 +117,10 @@ export const providerServices:any = {
     },
     getProviderMeals:async(id:string)=>{
       try{
-        const response = await fetch(`http://localhost:3000/provider/providerMeals/${id}`,{
+        const response = await fetch(`${API_URL}/provider/providerMeals/${id}`,{
           method:"GET",
-          credentials:'include'
+          credentials:'include',
+          next:{revalidate:150}
         })
         if(!response.ok){
           throw new Error("Failed to fetch meals")
@@ -130,7 +137,7 @@ export const providerServices:any = {
         for (let pair of mealData.entries()) {
           console.log(pair[0], pair[1]);
         }
-        const response = await fetch(`http://localhost:3000/provider/meals/${mealId}`,{
+        const response = await fetch(`${API_URL}/provider/meals/${mealId}`,{
           method:"PUT",
           credentials:'include',
           body:mealData
@@ -147,7 +154,7 @@ export const providerServices:any = {
     },
     deleteMeal:async(mealId:string)=>{
       try{
-        const response = await fetch(`http://localhost:3000/provider/meals/${mealId}`,{
+        const response = await fetch(`${API_URL}/provider/meals/${mealId}`,{
           method:"DELETE",
           credentials:'include',
         })
@@ -163,7 +170,7 @@ export const providerServices:any = {
     },
     getOrders:async(id:string)=>{
       const response = await fetch(
-        `http://localhost:3000/provider/provider_orders/${id}`,{
+        `${API_URL}/provider/provider_orders/${id}`,{
           method:"GET",
           credentials:'include'
         }
@@ -177,7 +184,7 @@ export const providerServices:any = {
     },
     updateOrderStatus:async(orderId:string, newStatus:string)=>{
       try{
-        const response = await fetch(`http://localhost:3000/provider/updateOrderStatus/${orderId}`,{
+        const response = await fetch(`${API_URL}/provider/updateOrderStatus/${orderId}`,{
           method:"PUT",
           credentials:'include',
           headers:{

@@ -1,5 +1,7 @@
 
 import { Search } from 'lucide-react';
+
+const API_URL = process.env.API_URL
 export const adminServices = {
     getAllUsers: async(params:{search?:string,role?:string,isActive?:string})=>{
         try {
@@ -9,7 +11,7 @@ export const adminServices = {
               if (value) query.append(key, value);
             });
 
-            const res = await fetch(`http://localhost:3000/admin/users?${query.toString()}`, {
+            const res = await fetch(`${API_URL}/admin/users?${query.toString()}`, {
               method: "GET",
               credentials: "include",
               cache:"no-store",
@@ -40,7 +42,7 @@ export const adminServices = {
             });
 
             console.log("Query parameters for orders:", query.toString());
-            const res = await fetch(`http://localhost:3000/admin/orders?${query.toString()}`, {
+            const res = await fetch(`${API_URL}/admin/orders?${query.toString()}`, {
               method: "GET",
               credentials: "include",
               headers: {
@@ -61,7 +63,7 @@ export const adminServices = {
     },
     updateUserStatus:async(userId:string,status:string)=>{
         try {
-            const res = await fetch(`http://localhost:3000/admin/users/${userId}`, {
+            const res = await fetch(`${API_URL}/admin/users/${userId}`, {
               method: "PUT",
               credentials: "include",
               headers: {

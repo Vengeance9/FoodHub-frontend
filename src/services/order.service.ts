@@ -1,7 +1,8 @@
+const API_URL=process.env.API_URL
 export const orderService = {
     AddToCart:async function(providerMealId:string,quantity:number){
             try {
-            const response = await fetch(`http://localhost:3000/order/add_to_cart/${providerMealId}`,{
+            const response = await fetch(`${API_URL}/order/add_to_cart/${providerMealId}`,{
                 method:"POST",
                 credentials:'include',
                 headers:{
@@ -26,7 +27,7 @@ export const orderService = {
 
     GetCart:async function(){
         try{
-            const response = await fetch(`http://localhost:3000/order/cart`, {
+            const response = await fetch(`${API_URL}/order/cart`, {
               method: "GET",
               credentials:'include',
                 cache: "no-store"
@@ -45,7 +46,7 @@ export const orderService = {
         }
     },
     ClearCart:async function(){
-        const response = await fetch(`http://localhost:3000/order/clear_cart`,{
+        const response = await fetch(`${API_URL}/order/clear_cart`,{
             method:'DELETE',
             credentials:'include'
         })
@@ -55,7 +56,7 @@ export const orderService = {
         return response.json()
     },
     checkOutOrder:async function(deliveryAddress:string,contact:string){
-        const response = await fetch(`http://localhost:3000/order/checkout`,{
+        const response = await fetch(`${API_URL}/order/checkout`,{
             method:'POST',
             credentials:'include',
             headers:{
