@@ -44,7 +44,7 @@ export default function Navbar() {
   };
 
   const { data } = authClient.useSession();
-  console.log('This is the user id',data?.user.id);
+  //console.log('This is the user id',data?.user.id);
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
