@@ -134,7 +134,7 @@ export default function Cart() {
                       <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-gray-50">
                         <img
                           src={
-                            item.providerMeal.image || "/placeholder-food.jpg"
+                            item.providerMeal.image || "/placeholder-food.png"
                           }
                           alt={item.providerMeal.meal.name}
                           className="w-full h-full object-cover"

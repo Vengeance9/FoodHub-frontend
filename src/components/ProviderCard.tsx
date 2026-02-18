@@ -14,7 +14,7 @@ export default function ProviderCard({ meal }: { meal: any }) {
   // Determine if it's a provider or meal
   const isProvider = meal.restaurantName !== undefined;
   const displayName = isProvider ? meal.restaurantName : meal.name;
-  const displayImage = meal.image || "/placeholder-food.jpg";
+  const displayImage = meal.image || "/placeholder-food.png";
   const isOpen = meal.isopen || meal.isAvailable;
 
   return (

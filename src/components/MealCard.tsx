@@ -46,7 +46,7 @@ export default function MealCard({ meal }: { meal: any }) {
       >
         <div className="aspect-video w-full overflow-hidden">
           <img
-            src={meal.image || "/placeholder-food.jpg"}
+            src={meal.image || "/placeholder-food.png"}
             alt={meal.meal.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
@@ -79,7 +79,7 @@ export default function MealCard({ meal }: { meal: any }) {
             {/* Modal Image */}
             <div className="relative h-72 w-full">
               <img
-                src={meal.image || "/placeholder-food.jpg"}
+                src={meal.image || "/placeholder-food.png"}
                 alt={meal.meal.name}
                 className="w-full h-full object-cover"
               />
