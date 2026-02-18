@@ -11,9 +11,12 @@ import {
   ChevronRight,
   Heart,
 } from "lucide-react";
+import { authService } from "@/services/auth.service";
 
-export default function Footer() {
+export default async function Footer() {
   const currentYear = new Date().getFullYear();
+
+  
 
   return (
     <footer className="bg-gray-900 text-gray-300">

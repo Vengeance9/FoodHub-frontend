@@ -31,7 +31,7 @@ export default function Navbar() {
   const [serverSession, setServerSession] = useState<any>(null);
 
  
-
+  
 
   const signOut = async () => {
     await authClient.signOut({
