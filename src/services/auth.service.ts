@@ -15,6 +15,7 @@ export const authService = {
         headers: {
           Cookie: cookieStore.toString(),
         },
+        credentials: "include",
         cache: "no-store",
       });
 
