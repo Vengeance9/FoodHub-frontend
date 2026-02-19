@@ -31,28 +31,28 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [serverSession, setServerSession] = useState<any>(null);
 
- useEffect(()=>{
-  const fetchSession = async ()=>{
-    const session = await authService.getServerSession();
-    setServerSession(session);
-  }
-  fetchSession();
- },[])
+//  useEffect(()=>{
+//   const fetchSession = async ()=>{
+//     const session = await authService.getServerSession();
+//     setServerSession(session);
+//   }
+//   fetchSession();
+//  },[])
 
- const data = serverSession
+//  const data = serverSession
 
- console.log('This is the data',data)
- console.log('This is the data user',data?.user)
+//  console.log('This is the data',data)
+//  console.log('This is the data user',data?.user)
 
- if (data?.user?.id) {
-   console.log(data.user.id);
- }
- if(data?.user?.name){
-   console.log(data.user.name);
- }
+//  if (data?.user?.id) {
+//    console.log(data.user.id);
+//  }
+//  if(data?.user?.name){
+//    console.log(data.user.name);
+//  }
 
 
- console.log('This is the server session',serverSession)  
+//  console.log('This is the server session',serverSession)  
   
 
   const signOut = async () => {
@@ -65,12 +65,12 @@ export default function Navbar() {
     });
   };
 
-  // const { data,error } = authClient.useSession();
+  const { data,error } = authClient.useSession();
   
-  // console.log('This is the user id',data?.user.id);
-  // console.log('This is the user',data?.user);
-  // console.log('This is the user data',data);
-  // console.log('This is the error',error);
+  console.log('This is the user id',data?.user.id);
+  console.log('This is the user',data?.user);
+  console.log('This is the user data',data);
+  console.log('This is the error',error);
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
