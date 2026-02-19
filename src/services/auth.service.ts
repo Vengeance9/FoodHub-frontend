@@ -1,5 +1,7 @@
 //import { cookies } from "next/headers";
 
+
+
 const AUTH_API = process.env.NEXT_PUBLIC_AUTH_URL;
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const authService = {
@@ -37,7 +39,6 @@ export const authService = {
         //cache:"no-store",
         
       })
-    
         const data = await result.json();
         return data;
       
@@ -45,5 +46,37 @@ export const authService = {
     }catch(e:any){
       console.log(e.message);
     }
+  },
+  signIn: async (email: string, password: string) => {
+    const data = await fetch(`${NEXT_PUBLIC_API_URL}/api/auth/sign-in/email`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        email,
+        password,
+        callbackURL: `${window.location.origin}/`,
+      }),
+    })
+    const result = await data.json();
+    return result;
+  },
+  signUp: async (email: string, password: string, name: string) => {
+    const data = await fetch(`${NEXT_PUBLIC_API_URL}/api/auth/sign-up/email`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        name,
+        callbackURL: `${window.location.origin}/`,
+      }),
+    })
+    const result = await data.json();
+    return result;
   }
 };

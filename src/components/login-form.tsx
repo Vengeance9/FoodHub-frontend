@@ -20,6 +20,7 @@ import { authClient } from "@/lib/auth";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { authService } from "@/services/auth.service";
 
 export function LoginForm({
   className,
@@ -36,12 +37,11 @@ export function LoginForm({
     e.preventDefault();
     setIsLoading(true);
 
-    const { data, error } = await authClient.signIn.email({
+    const result: any = await authService.signIn(
       email,
       password,
-      callbackURL: "/",
-      rememberMe: false,
-    });
+    );
+    const error = result.error;
 
     if (error) {
       switch (error.code) {
