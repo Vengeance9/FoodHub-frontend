@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 
 const AUTH_API = process.env.NEXT_PUBLIC_AUTH_URL;
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const authService = {
   getSession: async () => {
     try {
@@ -28,4 +29,21 @@ export const authService = {
       throw new Error(e.message);
     }
   },
+  getServerSession:async()=>{
+    try{
+      const result = await fetch(`${NEXT_PUBLIC_API_URL}/auth/session`, {
+        method:"GET",
+        credentials:"include",
+        //cache:"no-store",
+        
+      })
+    
+        const data = await result.json();
+        return data;
+      
+
+    }catch(e:any){
+      console.log(e.message);
+    }
+  }
 };
