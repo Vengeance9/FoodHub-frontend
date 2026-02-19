@@ -37,14 +37,21 @@ export default function Navbar() {
     setServerSession(session);
   }
   fetchSession();
- },[serverSession])
+ },[])
 
  const data = serverSession
 
  console.log('This is the data',data)
  console.log('This is the data user',data?.user)
- console.log('This is the data user id',data?.user.id)
- console.log('This is the data user name',data?.user.name)
+
+ if (data?.user?.id) {
+   console.log(data.user.id);
+ }
+ if(data?.user?.name){
+   console.log(data.user.name);
+ }
+
+
  console.log('This is the server session',serverSession)  
   
 
