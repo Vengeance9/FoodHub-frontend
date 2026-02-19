@@ -131,7 +131,7 @@ export default function Navbar() {
               )}
 
               {/* Admin Link */}
-              {data?.user.role === "ADMIN" && (
+              {data?.user?.role === "ADMIN" && (
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link
@@ -248,7 +248,7 @@ export default function Navbar() {
               )}
 
               {/* Admin Link */}
-              {data?.user.role === "ADMIN" && (
+              {data?.user?.role === "ADMIN" && (
                 <Link
                   href="/admin"
                   className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 rounded-lg transition-colors"
