@@ -9,7 +9,7 @@ export async function proxy(request: NextRequest) {
   let isAuthenticated = false;
   let role = null;
 
-  const  data  = await authService.getSession();
+  const  data  = await authService.getServerSession();
 
   console.log("Session data in proxy:", data);
 
