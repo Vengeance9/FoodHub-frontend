@@ -5,10 +5,24 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { authClient } from "@/lib/auth";
 import { useState, useEffect } from "react";
+import { authService } from "@/services/auth.service";
 
 export default function HeroSection() {
-  const { data, isPending } = authClient.useSession();
+  //const { data, isPending } = authClient.useSession();
   const [mounted, setMounted] = useState(false);
+  const [data, setData] = useState<any>(null);
+  
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await authService.getServerSession();
+      setData(session);
+      console.log('THIS IS THE SESSION',session);
+    };
+    fetchSession();
+  }, []);
+
+  console.log('this is the session', data);
 
   useEffect(() => {
     setMounted(true);
