@@ -23,7 +23,20 @@ import {
   Home,
   ChevronDown,
 } from "lucide-react";
-import { authService } from "@/services/auth.service";
+import {
+  getCookie,
+  getCookies,
+  setCookie,
+  deleteCookie,
+  hasCookie,
+  useGetCookies,
+  useSetCookie,
+  useHasCookie,
+  useDeleteCookie,
+  useGetCookie,
+} from "cookies-next/client";
+
+
 
 
 export default function Navbar() {

@@ -10,30 +10,33 @@ import { authService } from "@/services/auth.service";
 export default function HeroSection() {
   //const { data, isPending } = authClient.useSession();
   const [mounted, setMounted] = useState(false);
-  const [data, setData] = useState<any>(null);
+ 
   
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      const session = await authService.getServerSession();
-      setData(session);
-      console.log('THIS IS THE SESSION',session);
-    };
-    fetchSession();
-  }, []);
+  // useEffect(() => {
+  //   const fetchSession = async () => {
+  //     const session = await authService.getServerSession();
+  //     setData(session);
+  //     console.log('THIS IS THE SESSION',session);
+  //   };
+  //   fetchSession();
+  // }, []);
 
-  console.log('this is the session', data);
+  // console.log('this is the session', data);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // useEffect(() => {
+  //   setMounted(true);
+  // }, []);
+
+  const { data, error } = authClient.useSession();
+  console.log('THIS IS THE DATA IN HERO',data);
 
   // Always render the same structure, only change the content
   return (
     <section className="container ml-10 px-4 py-20 grid md:grid-cols-2 gap-10 items-center max-w-7xl mx-auto">
       <div className="space-y-6">
         <h1 className="text-3xl text-green-800">
-          Welcome {mounted && data?.user ? data.user.name : "Guest"}
+          Welcome {data?.user ? data.user.name : "Guest"}
         </h1>
 
         <Badge>🍔 Fast & Fresh</Badge>

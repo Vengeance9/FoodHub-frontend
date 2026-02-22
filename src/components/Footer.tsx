@@ -82,11 +82,11 @@ export default async function Footer() {
             </h3>
             <ul className="space-y-2">
               {[
-                { name: "About Us", href: "/about" },
-                { name: "Menu", href: "/menu" },
-                { name: "Restaurants", href: "/restaurants" },
-                { name: "Offers", href: "/offers" },
-                { name: "Contact", href: "/contact" },
+                { name: "About Us", href: "#" },
+                { name: "Menu", href: "#" },
+                { name: "Restaurants", href: "#" },
+                { name: "Offers", href: "#" },
+                { name: "Contact", href: "#" },
               ].map((link) => (
                 <li key={link.name}>
                   <Link

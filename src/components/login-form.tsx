@@ -42,6 +42,7 @@ export function LoginForm({
       password,
     );
     const error = result.error;
+    console.log('LOGIN RESULT',result)
 
     if (error) {
       switch (error.code) {
@@ -62,7 +63,9 @@ export function LoginForm({
       }
     } else {
       toast.success("Logged in successfully!");
-      router.push("/");
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
     }
 
     setIsLoading(false);

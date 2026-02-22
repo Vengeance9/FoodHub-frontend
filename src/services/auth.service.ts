@@ -1,6 +1,4 @@
-//import { cookies } from "next/headers";
-
-
+import { getCookie } from "cookies-next/client";
 
 const AUTH_API = process.env.NEXT_PUBLIC_AUTH_URL;
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -31,18 +29,21 @@ export const authService = {
   //     throw new Error(e.message);
   //   }
   // },
-  getServerSession:async()=>{
-    try{
+  getServerSession: async () => {
+    try {
+      const sessionToken = getCookie("__Secure-better-auth.session_token");
       const result = await fetch(`${NEXT_PUBLIC_API_URL}/auth/me`, {
-        method:"GET",
-        credentials:"include",
-        //cache:"no-store",
-        
-      })
-        const data = await result.json();
-        console.log(data)
-        return data;
-    }catch(e:any){
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          ...(sessionToken && { Authorization: `Bearer ${sessionToken}` }),
+        },
+      });
+      const data = await result.json();
+      console.log(data);
+      return data;
+    } catch (e: any) {
       console.log(e.message);
     }
   },
@@ -58,8 +59,10 @@ export const authService = {
         password,
         callbackURL: `${window.location.origin}/`,
       }),
-    })
+    });
+
     const result = await data.json();
+    console.log('THIS IS THE LOGIN RESULT',result);
     return result;
   },
   signUp: async (email: string, password: string, name: string) => {
@@ -74,8 +77,8 @@ export const authService = {
         name,
         callbackURL: `${window.location.origin}/`,
       }),
-    })
+    });
     const result = await data.json();
     return result;
-  }
+  },
 };
