@@ -35,6 +35,7 @@ import {
   useDeleteCookie,
   useGetCookie,
 } from "cookies-next/client";
+import { authService } from "@/services/auth.service";
 
 
 
@@ -44,13 +45,15 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [serverSession, setServerSession] = useState<any>(null);
 
-//  useEffect(()=>{
-//   const fetchSession = async ()=>{
-//     const session = await authService.getServerSession();
-//     setServerSession(session);
-//   }
-//   fetchSession();
-//  },[])
+useEffect(() => {
+  const fetchSession = async () => {
+    const session = await authService.getServerSession();
+    setServerSession(session);
+  };
+  fetchSession();
+}, []);
+
+console.log('This is the server session in NAVBAR.TSX COMPONENT',serverSession)
 
 //  const data = serverSession
 
