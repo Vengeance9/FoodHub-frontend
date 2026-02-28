@@ -1,8 +1,8 @@
-
+"use server";
 import { cookies } from "next/headers";
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
-export const adminServices = {
-  getAllUsers: async (params: {
+
+  export const getAllUsers= async (params: {
     search?: string;
     role?: string;
     isActive?: string;
@@ -39,8 +39,8 @@ export const adminServices = {
       console.error(error);
       //throw error;
     }
-  },
-  getAllOrders: async (params: { page: number; limit: number }) => {
+  }
+  export const getAllOrders=async (params: { page: number; limit: number }) => {
     const store = await cookies();
     const token = store.get("token")?.value;
     try {
@@ -75,8 +75,8 @@ export const adminServices = {
       console.error(error);
       throw error;
     }
-  },
-  updateUserStatus: async (userId: string, status: string) => {
+  }
+  export const updateUserStatus= async (userId: string, status: string) => {
     const store = await cookies();
     const token = store.get("token")?.value;
     try {
@@ -99,5 +99,5 @@ export const adminServices = {
       console.error(error);
       throw error;
     }
-  },
-};
+  }
+

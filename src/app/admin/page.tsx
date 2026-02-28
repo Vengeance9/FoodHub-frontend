@@ -1,6 +1,6 @@
 "use client";
 
-import { adminServices } from "@/services/adminServices";
+
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { getAllOrders, getAllUsers, updateUserStatus } from "@/services/adminServices";
 
 export default function Admin() {
   const [users, setUsers] = useState<any[]>([]);
@@ -60,7 +61,7 @@ export default function Admin() {
         limit: pagination.limit,
       };
 
-      const res = await adminServices.getAllUsers(params);
+      const res = await getAllUsers(params);
       setUsers(res.data.userWithOrderCounts);
       setPagination(res.data.pagination);
       console.log('This is the res',res)
@@ -80,7 +81,7 @@ export default function Admin() {
         page: pageNum,
         limit: orderPagination.limit,
       };
-      const res = await adminServices.getAllOrders(params);
+      const res = await getAllOrders(params);
       setOrders(res.data.orders);
       setOrderPagination(res.data.pagination);
     } catch (error) {
@@ -128,7 +129,7 @@ export default function Admin() {
       }
       console.log(status);
 
-      const res = await adminServices.updateUserStatus(user.id, status);
+      const res = await updateUserStatus(user.id, status);
       toast.success(res.message);
       console.log(res.data);
     } catch (error) {
