@@ -1,5 +1,5 @@
-import { Search } from "lucide-react";
 
+import { cookies } from "next/headers";
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const adminServices = {
   getAllUsers: async (params: {
@@ -7,6 +7,8 @@ export const adminServices = {
     role?: string;
     isActive?: string;
   }) => {
+    const store = await cookies();
+    const token = store.get("token")?.value;
     try {
       const query = new URLSearchParams();
 
@@ -18,10 +20,11 @@ export const adminServices = {
         `${NEXT_PUBLIC_API_URL}/admin/users?${query.toString()}`,
         {
           method: "GET",
-          credentials: "include",
+          //credentials: "include",
           cache: "no-store",
           headers: {
             "Content-Type": "application/json",
+            Authorization: token!,
           },
         }
       );
@@ -38,6 +41,8 @@ export const adminServices = {
     }
   },
   getAllOrders: async (params: { page: number; limit: number }) => {
+    const store = await cookies();
+    const token = store.get("token")?.value;
     try {
       const query = new URLSearchParams();
 
@@ -52,9 +57,10 @@ export const adminServices = {
         `${NEXT_PUBLIC_API_URL}/admin/orders?${query.toString()}`,
         {
           method: "GET",
-          credentials: "include",
+          //credentials: "include",
           headers: {
             "Content-Type": "application/json",
+            Authorization: token!,
           },
         }
       );
@@ -71,12 +77,15 @@ export const adminServices = {
     }
   },
   updateUserStatus: async (userId: string, status: string) => {
+    const store = await cookies();
+    const token = store.get("token")?.value;
     try {
       const res = await fetch(`${NEXT_PUBLIC_API_URL}/admin/users/${userId}`, {
         method: "PUT",
-        credentials: "include",
+       // credentials: "include",
         headers: {
           "Content-Type": "application/json",
+          Authorization: token!,
         },
         body: JSON.stringify({ status }),
       });

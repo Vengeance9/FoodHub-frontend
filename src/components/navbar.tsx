@@ -108,38 +108,33 @@ useEffect(()=>{
                     href="/"
                     className="flex items-center gap-1 text-gray-600 hover:text-yellow-600 transition-colors"
                   >
-                    
                     Home
                   </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
-              {
-                user && (
-                  <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                      <Link
-                        href="/MyOrders"
-                        className="flex items-center gap-1 text-gray-600 hover:text-yellow-600 transition-colors"
-                      >
-                        Your Orders
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                )
-              }
+              {user && (
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href="/MyOrders"
+                      className="flex items-center gap-1 text-gray-600 hover:text-yellow-600 transition-colors"
+                    >
+                      Your Orders
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              )}
 
               {/* Provider/Register Link */}
               {user && (
-                
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    {user.role  === "PROVIDER" ? (
+                    {user.role === "PROVIDER" ? (
                       <Link
                         href={`/providerProfile/${user.id}`}
                         className="flex items-center gap-1 text-gray-600 hover:text-yellow-600 transition-colors"
                       >
-                       
                         Provider Profile
                       </Link>
                     ) : user.role === "CUSTOMER" ? (
@@ -147,7 +142,6 @@ useEffect(()=>{
                         href="/provider"
                         className="flex items-center gap-1 text-gray-600 hover:text-yellow-600 transition-colors"
                       >
-                        
                         Register as Provider
                       </Link>
                     ) : null}
@@ -164,7 +158,7 @@ useEffect(()=>{
                       className="flex items-center gap-1 text-gray-600 hover:text-yellow-600 transition-colors"
                     >
                       <Shield className="h-4 w-4" />
-                      Admin
+                      <p>Admin</p>
                     </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
