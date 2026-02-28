@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,8 +8,10 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import Image from "next/image";
-import { providerServices } from "@/services/provider.service";
+
 import { useRouter } from "next/navigation";
+import { register } from "@/services/provider.service";
+import { getUser } from "@/services/auth.service";
 
 const CUISINE_OPTIONS = [
   "pizza",
@@ -30,9 +32,20 @@ const CUISINE_OPTIONS = [
 export default function ProviderRegister() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(true);
   const [selectedCuisines, setSelectedCuisines] = useState<string[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
+  const [user,setUser] = useState<any>(null);
+
+useEffect(() => {
+  const getCurrentUser = async () => {
+    const userData = await getUser();
+    setUser(userData);
+  };
+  getCurrentUser();
+}, []);
+
 
   const [formData, setFormData] = useState({
     restaurantName: "",
@@ -77,6 +90,8 @@ export default function ProviderRegister() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    console.log('This is the user',user)  
+
     if (!imageFile) {
       toast.error("Please upload a restaurant image");
       return;
@@ -101,10 +116,11 @@ export default function ProviderRegister() {
       formDataToSend.append("cuisineType", JSON.stringify(selectedCuisines));
       formDataToSend.append("image", imageFile);
 
-      const response = await providerServices.register(formDataToSend);
+      const response = await register(formDataToSend);
 
       if (response.ok) {
         toast.success("Restaurant registered successfully!");
+        setDisabled(true);
         router.push("/");
       } else {
         toast.error(response.message || "Registration failed");
@@ -288,7 +304,7 @@ export default function ProviderRegister() {
           <div className="pt-6 border-t">
             <Button
               type="submit"
-              disabled={loading}
+              disabled={loading || disabled}
               className="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-6 text-lg"
             >
               {loading ? "Registering..." : "Register Restaurant"}

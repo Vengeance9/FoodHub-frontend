@@ -1,4 +1,4 @@
-import { providerServices } from "@/services/provider.service";
+
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { getOrders, updateOrderStatus } from "@/services/provider.service";
 
 type OrderItem = {
   Providermeal: {
@@ -58,7 +59,7 @@ export default function ProviderOrders({ id }: { id: string }) {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const data = await providerServices.getOrders(id);
+        const data = await  getOrders(id);
         console.log(id)
         setOrders(data.data || []);
         //console.log('This is the id',data.data[0].id)
@@ -71,10 +72,10 @@ export default function ProviderOrders({ id }: { id: string }) {
     fetchOrders();
   }, [id]);
 
-  const updateOrderStatus = async (orderId: string, newStatus: string) => {
+  const updateTheOrderStatus = async (orderId: string, newStatus: string) => {
     setUpdatingId(orderId);
     try {
-      const response = await providerServices.updateOrderStatus(
+      const response = await  updateOrderStatus(
         orderId,
         newStatus
       );
@@ -144,7 +145,7 @@ export default function ProviderOrders({ id }: { id: string }) {
                   {STATUS_OPTIONS.map((status) => (
                     <DropdownMenuItem
                       key={status}
-                      onClick={() => updateOrderStatus(order.id, status)}
+                      onClick={() => updateTheOrderStatus(order.id, status)}
                       disabled={
                         status === order.status || updatingId === order.id
                       }

@@ -1,6 +1,6 @@
 "use client";
 
-import { providerServices } from "@/services/provider.service";
+
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/card";
 import { CalendarIcon, MapPinIcon, BuildingIcon, SearchIcon } from "lucide-react";
 import { authClient } from "@/lib/auth";
+import { getRestaurants } from "@/services/provider.service";
 
 
 type Restaurant = {
@@ -31,16 +32,17 @@ export default function ProviderDashboard() {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [revenue, setRevenue] = useState(0);
-  const { data: session } = authClient.useSession();
+  const [user, setUser] = useState<any>(null);
   const [length, setLength] = useState(0);
 
   useEffect(() => {
     const fetchRestaurants = async () => {
-      if (!session?.user?.id) return;
+      if (user?.id) return;
 
       try {
         
-        const data = await providerServices.getRestaurants(searchTerm);
+        const data = await getRestaurants(searchTerm);
+        console.log(data)
         console.log('This is the data',data.data.providers)
         setRestaurants(data.data.providers || []);
         setRevenue(data.data.totalRevenue);
@@ -60,7 +62,7 @@ export default function ProviderDashboard() {
     //setLoading(true);
     try {
       console.log(searchTerm)
-      const data = await providerServices.getRestaurants(searchTerm);
+      const data = await getRestaurants(searchTerm);
       setRestaurants(data.data.providers || []);
       console.log('This is the data',data.data.providers)
     } catch (error) {
@@ -145,7 +147,7 @@ export default function ProviderDashboard() {
 
         {/* Add New Restaurant Button */}
         <div className="mb-6">
-          <Link href="/provider/register">
+          <Link href="/provider">
             <Button className="bg-yellow-600 hover:bg-yellow-700">
               + Add New Restaurant
             </Button>
@@ -173,12 +175,12 @@ export default function ProviderDashboard() {
               className="overflow-hidden hover:shadow-lg transition-shadow"
             >
               <div className="relative h-48 w-full">
-                <Image
+                {/* <Image
                   src={restaurant.image || "/restaurant-placeholder.jpg"}
                   alt={restaurant.restaurantName}
                   fill
                   className="object-cover"
-                />
+                /> */}
                 <div className="absolute top-2 right-2">
                   <Badge
                     variant={restaurant.isOpen ? "default" : "secondary"}

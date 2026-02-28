@@ -1,10 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import { categoryService } from "../services/category.service";
+
 import Link from "next/link";
 import ProviderCard from "./ProviderCard";
-import { providerServices } from "@/services/provider.service";
+
 import { ChevronRight, X, Filter, Utensils, Store } from "lucide-react";
+import { getCategories, getCategoryProviders } from "@/services/category.service";
+import { getProviders } from "@/services/provider.service";
 
 export default function CategorySection() {
   const [meals, setMeals] = useState([]);
@@ -17,7 +19,7 @@ export default function CategorySection() {
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const data = await categoryService.getCategories();
+        const data = await getCategories();
         setCategories(data);
       } catch (e: any) {
         console.log(e);
@@ -30,7 +32,7 @@ export default function CategorySection() {
 
   useEffect(() => {
     const AllProviders = async () => {
-      const data = await providerServices.getProviders();
+      const data = await getProviders();
       console.log(data);
       setProviders(data.data);
     };
@@ -42,7 +44,7 @@ export default function CategorySection() {
     setSelectedCategory(name);
     try {
       console.log("Fetching meals for:", name);
-      const data = await categoryService.getCategoryProviders(name);
+      const data = await getCategoryProviders(name);
       setMeals(data.result);
     } catch (e: any) {
       console.log(e);

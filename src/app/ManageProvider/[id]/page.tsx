@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import Image from "next/image";
-import { providerServices } from "@/services/provider.service";
+
 import {
   Dialog,
   DialogContent,
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import ProviderMeals from "@/components/ProviderMeals";
 import ProviderOrders from "@/components/ProviderOrders";
+import { CreateMeals } from "@/services/provider.service";
 
 const CATEGORY_OPTIONS = [
   "pizza",
@@ -136,7 +137,7 @@ export default function ManageProvider() {
       formDataToSend.append("image", imageFile);
       formDataToSend.append("providerId", id as string);
 
-      const response = await providerServices.CreateMeals(formDataToSend,id as string);
+      const response = await CreateMeals(formDataToSend,id as string);
 
       if (response.ok) {
         toast.success("Meal created successfully!");

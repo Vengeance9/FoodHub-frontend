@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { UserRole } from "./constants/roles";
-import { authService } from "./services/auth.service";
+import { UserRole } from "@/constants/roles";
+import { getUser } from "@/services/auth.service";
+
 
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -9,16 +10,15 @@ export async function proxy(request: NextRequest) {
   let isAuthenticated = false;
   let role = null;
 
-  const  data  = await authService.getSession();
+  const user = await getUser();
 
-  console.log("Session data in proxy:", data);
-
-  if (data) {
+  if (!user) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }else{
     isAuthenticated = true;
-    role = data.user.role;
-  }
-
- 
+    role = user.role;
+  }  
+  
   if (!isAuthenticated) {
     if(pathname.startsWith("/admin") || pathname.startsWith("/ManageProvider") || pathname.startsWith("/checkOutOrder") || pathname.startsWith("/providerEdit") || pathname.startsWith("/providerProfile")){
     return NextResponse.redirect(new URL("/login", request.url));
@@ -82,3 +82,5 @@ export const config = {
     "/providerProfile/:path*",
   ],
 };
+
+

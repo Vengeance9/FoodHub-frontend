@@ -1,17 +1,28 @@
 "use client";
 import { authClient } from "@/lib/auth";
-import { orderService } from "@/services/order.service";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ShoppingCart, Plus, Minus, X } from "lucide-react";
+import { getUser } from "@/services/auth.service";
+import { AddToCart } from "@/services/order.service";
+import { useRouter } from "next/navigation";
 
 export default function MealCard({ meal }: { meal: any }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [user, setUser] = useState<any>(null);
+  const router = useRouter();
 
-  const { data } = authClient.useSession();
-  const isAuthenticated = !!data;
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const userData = await getUser();
+      setUser(userData);
+    };
+    getCurrentUser();
+  }, []);
+  const isAuthenticated = !!user;
 
   const handleAddToCart = async (quantity: number, mealId: string) => {
     if (!isAuthenticated) {
@@ -21,7 +32,7 @@ export default function MealCard({ meal }: { meal: any }) {
 
     setIsAdding(true);
     try {
-      const response = await orderService.AddToCart(mealId, quantity);
+      const response = await AddToCart(mealId, quantity);
       if (response.ok) {
         toast.success(response.message);
         setIsModalOpen(false);
@@ -34,6 +45,9 @@ export default function MealCard({ meal }: { meal: any }) {
       toast.error("Failed to add to cart");
     } finally {
       setIsAdding(false);
+      setTimeout(()=>{
+        router.refresh()
+      },2000)
     }
   };
 
@@ -46,7 +60,7 @@ export default function MealCard({ meal }: { meal: any }) {
       >
         <div className="aspect-video w-full overflow-hidden">
           <img
-            src={meal.image || "/placeholder-food.jpg"}
+            src={meal.image || "/placeholder-food.png"}
             alt={meal.meal.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
@@ -79,7 +93,7 @@ export default function MealCard({ meal }: { meal: any }) {
             {/* Modal Image */}
             <div className="relative h-72 w-full">
               <img
-                src={meal.image || "/placeholder-food.jpg"}
+                src={meal.image || "/placeholder-food.png"}
                 alt={meal.meal.name}
                 className="w-full h-full object-cover"
               />

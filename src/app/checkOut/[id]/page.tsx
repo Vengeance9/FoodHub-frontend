@@ -1,7 +1,8 @@
 'use client'
 
 import OrderInfo from "@/components/OrderInfo";
-import { orderService } from "@/services/order.service";
+import { GetCart } from "@/services/order.service";
+
 import { useEffect, useState } from "react";
 
 type CartItem = {
@@ -24,10 +25,11 @@ export default function CheckOut() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [id, setId] = useState("");
+  const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
     const fetchCart = async () => {
-      const cart = await orderService.GetCart();
+      const cart = await GetCart();
 
       if (cart?.data?.cart?.items) {
         setItems(cart.data.cart.items);

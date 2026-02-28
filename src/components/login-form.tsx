@@ -20,6 +20,8 @@ import { authClient } from "@/lib/auth";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { loginUser } from "@/services/auth.service";
+
 
 export function LoginForm({
   className,
@@ -36,33 +38,23 @@ export function LoginForm({
     e.preventDefault();
     setIsLoading(true);
 
-    const { data, error } = await authClient.signIn.email({
+    const result: any = await loginUser({
       email,
       password,
-      callbackURL: "/",
-      rememberMe: false,
-    });
+    }
+    );
+    
+    console.log('LOGIN RESULT',result)
 
-    if (error) {
-      switch (error.code) {
-        case "INVALID_EMAIL_OR_PASSWORD":
-          toast.error("Invalid email or password");
-          break;
-        case "USER_NOT_FOUND":
-          toast.error("No account found with this email");
-          break;
-        case "ACCOUNT_LOCKED":
-          toast.error("Account is locked. Please try again later");
-          break;
-        case "TOO_MANY_REQUESTS":
-          toast.error("Too many attempts. Please try again later");
-          break;
-        default:
-          toast.error(error.message || "Something went wrong");
-      }
+    if (!result.success) {
+      toast.error(result.message);
+      setIsLoading(false);
     } else {
       toast.success("Logged in successfully!");
-      router.push("/");
+      setTimeout(() => {
+        router.refresh()
+        router.push("/");
+      }, 2000);
     }
 
     setIsLoading(false);

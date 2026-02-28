@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { orderService } from "@/services/order.service";
+
 import { toast } from "sonner";
 import { MapPin, Phone, CheckCircle, ArrowLeft, ShoppingBag } from "lucide-react";
 import Link from "next/link";
+import { checkOutOrder } from "@/services/order.service";
 
 type CartItem = {
   providerMeal: {
@@ -24,16 +25,19 @@ export default function OrderInfo() {
   const [deliveryAddress, setDeliveryAddress] = useState("");
   const [contact, setContact] = useState("");
   const [disable, setDisable] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const order = await orderService.checkOutOrder(deliveryAddress, contact);
+    setIsSubmitting(true);
+    const order = await checkOutOrder(deliveryAddress, contact);
     console.log(order);
     if (order.ok) {
       setDisable(true);
       setOrderPlaced(true);
     }
+    setIsSubmitting(false);
     console.log(order.message);
     toast(order.message);
   };
@@ -154,10 +158,10 @@ export default function OrderInfo() {
               </div>
             </div>
 
-            {/* Submit Button */}
+            
             <Button
               type="submit"
-              disabled={!deliveryAddress || !contact || disable}
+              disabled={!deliveryAddress || !contact || isSubmitting}
               className={`
                 w-full py-4 rounded-xl font-semibold text-lg transition-all
                 ${(!deliveryAddress || !contact || disable)
@@ -166,11 +170,8 @@ export default function OrderInfo() {
                 }
               `}
             >
-              {disable ? (
-                <span className="flex items-center justify-center gap-2">
-                  <CheckCircle className="h-5 w-5" />
-                  Order Placed
-                </span>
+              {isSubmitting ? (
+                  'Placing Order...'
               ) : (
                 'Place Order'
               )}

@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { categoryService } from "../services/category.service";
+
 import MealCard from "./MealCard";
 import { Utensils, ChevronRight } from "lucide-react";
+import { getCategoryMeals } from "@/services/category.service";
 
 export default function MealSection({
   id,
@@ -19,7 +20,7 @@ export default function MealSection({
     setLoading(true);
     setSelectedCuisine(name);
     try {
-      const data = await categoryService.getCategoryMeals(name, providerId);
+      const data = await getCategoryMeals(name, providerId);
       setMeals(data.result || []);
     } catch (e: any) {
       console.log(e);

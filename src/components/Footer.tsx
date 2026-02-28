@@ -12,8 +12,11 @@ import {
   Heart,
 } from "lucide-react";
 
-export default function Footer() {
+
+export default async function Footer() {
   const currentYear = new Date().getFullYear();
+
+  
 
   return (
     <footer className="bg-gray-900 text-gray-300">
@@ -79,11 +82,11 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2">
               {[
-                { name: "About Us", href: "/about" },
-                { name: "Menu", href: "/menu" },
-                { name: "Restaurants", href: "/restaurants" },
-                { name: "Offers", href: "/offers" },
-                { name: "Contact", href: "/contact" },
+                { name: "About Us", href: "#" },
+                { name: "Menu", href: "#" },
+                { name: "Restaurants", href: "#" },
+                { name: "Offers", href: "#" },
+                { name: "Contact", href: "#" },
               ].map((link) => (
                 <li key={link.name}>
                   <Link
@@ -133,11 +136,11 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-sm">
-                <MapPin className="h-5 w-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+                <MapPin className="h-5 w-5 text-yellow-400 shrink-0 mt-0.5" />
                 <span>123 Food Street, Culinary District, Dhaka 1200</span>
               </li>
               <li className="flex items-center gap-3 text-sm">
-                <Phone className="h-5 w-5 text-yellow-400 flex-shrink-0" />
+                <Phone className="h-5 w-5 text-yellow-400 shrink-0" />
                 <a
                   href="tel:+8801234567890"
                   className="hover:text-yellow-400 transition-colors"
@@ -146,7 +149,7 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex items-center gap-3 text-sm">
-                <Mail className="h-5 w-5 text-yellow-400 flex-shrink-0" />
+                <Mail className="h-5 w-5 text-yellow-400 shrink-0" />
                 <a
                   href="mailto:support@foodhub.com"
                   className="hover:text-yellow-400 transition-colors"
@@ -155,7 +158,7 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex items-center gap-3 text-sm">
-                <Clock className="h-5 w-5 text-yellow-400 flex-shrink-0" />
+                <Clock className="h-5 w-5 text-yellow-400 shrink-0" />
                 <span>Mon-Sun: 10:00 AM - 11:00 PM</span>
               </li>
             </ul>

@@ -1,10 +1,11 @@
 "use client";
-import { reviewServices } from "@/services/reviewServices";
+
 import { Star, User, Calendar } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Textarea } from "./ui/textarea";
 import { Button } from "components/ui/button";
+import { getAllReviews, getMyReviews, reviewProvider } from "@/services/reviewServices";
 
 export default function ReviewSection({ id }: { id: string }) {
   const [rating, setRating] = useState(0);
@@ -15,7 +16,7 @@ export default function ReviewSection({ id }: { id: string }) {
 
   useEffect(() => {
     const fetchMyReviews = async () => {
-      const reviews = await reviewServices.getMyReviews(id);
+      const reviews = await getMyReviews(id);
       const fetchedCommentValue = reviews.data?.comment || "";
       setFetchedComment(fetchedCommentValue);
       if (reviews.data?.rating) setRating(reviews.data.rating);
@@ -26,19 +27,19 @@ export default function ReviewSection({ id }: { id: string }) {
 
   useEffect(() => {
     const fetchAllReviews = async () => {
-      const reviews = await reviewServices.getAllReviews(id);
+      const reviews = await getAllReviews(id);
       setReviews(reviews.data || []);
     };
     fetchAllReviews();
   }, [id]);
 
   const handleRating = async (rating: number, comment?: string) => {
-    const response = await reviewServices.reviewProvider(id, rating, comment);
+    const response = await reviewProvider(id, rating, comment);
     if (response.ok) {
       toast.success(response.message);
       if (comment !== undefined) setFetchedComment(comment);
       // Refresh reviews
-      const updated = await reviewServices.getAllReviews(id);
+      const updated = await getAllReviews(id);
       setReviews(updated.data || []);
     } else {
       toast.error(response.message);
@@ -47,13 +48,11 @@ export default function ReviewSection({ id }: { id: string }) {
 
   return (
     <div className="space-y-10">
-      {/* Rate Us Section */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
           Rate Your Experience
         </h2>
 
-        {/* Star Rating */}
         <div className="flex flex-col items-start gap-4">
           <div className="flex gap-2">
             {[1, 2, 3, 4, 5].map((star) => (
@@ -82,7 +81,6 @@ export default function ReviewSection({ id }: { id: string }) {
           )}
         </div>
 
-        {/* Review Input */}
         <div className="mt-6 space-y-4">
           <Textarea
             className="w-full md:w-2/3 border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
@@ -106,7 +104,6 @@ export default function ReviewSection({ id }: { id: string }) {
         </div>
       </div>
 
-      {/* All Reviews Section */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-gray-900">Customer Reviews</h2>
@@ -126,10 +123,10 @@ export default function ReviewSection({ id }: { id: string }) {
                       <User className="h-5 w-5 text-yellow-600" />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900">
-                        {review.user?.name || "Anonymous"}
-                      </p>
                       <div className="flex items-center gap-2 mt-1">
+                        <p className="font-semibold text-gray-900">
+                          {review.user?.name || "Anonymous"}
+                        </p>
                         <div className="flex">
                           {[1, 2, 3, 4, 5].map((star) => (
                             <Star
@@ -145,12 +142,13 @@ export default function ReviewSection({ id }: { id: string }) {
                         <span className="text-sm text-gray-500">
                           {new Date(review.createdAt).toLocaleDateString()}
                         </span>
+                        
                       </div>
                     </div>
                   </div>
                 </div>
                 {review.comment && (
-                  <p className="text-gray-600 ml-13 pl-13">{review.comment}</p>
+                  <p className="text-gray-600  pl-13">{review.comment}</p>
                 )}
               </div>
             ))}

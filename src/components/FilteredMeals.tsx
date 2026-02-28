@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { categoryService } from "@/services/category.service";
+import { getCategories, getMeals } from "@/services/category.service";
 import { toast } from "sonner";
 import Link from "next/link";
 import {
@@ -53,7 +53,7 @@ export default function FilteredMealCard() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const data = await categoryService.getCategories();
+        const data = await getCategories();
         setCategories(data);
       } catch (e: any) {
         console.log(e);
@@ -66,7 +66,7 @@ export default function FilteredMealCard() {
   const fetchMeals = async () => {
     setLoading(true);
     try {
-      const data = await categoryService.getMeals({
+      const data = await getMeals({
         search,
         category,
         ratings: rating,

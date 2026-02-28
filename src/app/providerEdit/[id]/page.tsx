@@ -8,8 +8,9 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import Image from "next/image";
-import { providerServices } from "@/services/provider.service";
+
 import { useParams, useRouter } from "next/navigation";
+import { getProviderById, updateProvider } from "@/services/provider.service";
 
 const CUISINE_OPTIONS = [
   "pizza",
@@ -51,7 +52,7 @@ export default function ProviderEdit() {
   useEffect(() => {
     const fetchRestaurant = async () => {
       try {
-        const data = await providerServices.getProviderById(id);
+        const data = await getProviderById(id as string);
 
         console.log(data);
 
@@ -151,7 +152,7 @@ export default function ProviderEdit() {
         formDataToSend.append("image", imageFile);
       }
 
-      const response = await providerServices.updateProvider(id, formDataToSend);
+      const response = await updateProvider(id as string, formDataToSend);
 
       if (response.ok) {
         toast.success("Restaurant updated successfully!");

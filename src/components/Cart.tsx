@@ -1,10 +1,11 @@
 "use client";
-import { orderService } from "@/services/order.service";
+
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { ShoppingCart, Trash2, X } from "lucide-react";
+import { ClearCart, GetCart } from "@/services/order.service";
 
 type CartItem = {
   providerMeal: {
@@ -28,7 +29,7 @@ export default function Cart() {
   const [id, setId] = useState("");
 
   const fetchCart = async () => {
-    const cart = await orderService.GetCart();
+    const cart = await GetCart();
     if (cart?.data?.cart?.items) {
       setItems(cart.data.cart.items);
       setTotalAmount(cart.data.totalAmount);
@@ -40,9 +41,9 @@ export default function Cart() {
     fetchCart();
   }, []);
 
-  // Expose fetchCart to parent/other components via a custom event
+  
   useEffect(() => {
-    // Listen for cart updates
+   
     const handleCartUpdate = () => {
       fetchCart();
     };
@@ -55,7 +56,7 @@ export default function Cart() {
   }, []);
 
   const clearCart = async () => {
-    const response = await orderService.ClearCart();
+    const response = await ClearCart();
     console.log(response.message);
     if (response.ok) {
       setItems([]);
@@ -131,10 +132,10 @@ export default function Cart() {
                       className="flex gap-4 p-3 border border-gray-100 rounded-lg"
                     >
                       {/* Item Image */}
-                      <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-gray-50">
+                      <div className="w-20 h-20 rounded-lg overflow-hidden shrink-0 bg-gray-50">
                         <img
                           src={
-                            item.providerMeal.image || "/placeholder-food.jpg"
+                            item.providerMeal.image || "/placeholder-food.png"
                           }
                           alt={item.providerMeal.meal.name}
                           className="w-full h-full object-cover"

@@ -32,7 +32,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
           padding: "16px 20px", // Increased padding for bigger size
           fontSize: "16px", // Increased font size
           width: "400px", // Fixed width for larger toasts
-          height:"50px",
+          height:"60px",
           gap: "12px", // Increased gap between elements
         },
         className: "my-toast", // Add custom class for additional styling

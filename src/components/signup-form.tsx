@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { authClient } from "@/lib/auth"
+import { signUp } from "@/services/auth.service"
+
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
@@ -33,29 +35,15 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       toast.error("Passwords do not match");
       return;
     }
-    const { data, error } = await authClient.signUp.email(
-      {
-        email, // user email address
-        password, // user password -> min 8 characters by default
-        name, // user display name
-        role:"CUSTOMER",
-        callbackURL: "/", // A URL to redirect to after the user verifies their email (optional)
-      },
-      {
-        onRequest: (ctx) => {
-          //show loading
-        },
-        onSuccess: (ctx) => {
-          router.push("/"); // or router.push("/homepage")
-          toast.success("You have been emailed a verification link to verify your account");
-        },
-        onError: (ctx) => {
-          // display the error message
-          alert(ctx.error.message);
-        },
-      }
-    );
-    //toast.success("Account created successfully");
+    const result = await signUp(email, password, name);
+    if(result.error){
+      toast.error(result.error.message);
+    }else{
+      toast.success("Account created successfully!");
+      setTimeout(() => {
+        router.push("/login");
+      }, 1000);
+    }
   }
 
 

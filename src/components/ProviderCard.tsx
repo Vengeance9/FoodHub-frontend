@@ -14,14 +14,14 @@ export default function ProviderCard({ meal }: { meal: any }) {
   // Determine if it's a provider or meal
   const isProvider = meal.restaurantName !== undefined;
   const displayName = isProvider ? meal.restaurantName : meal.name;
-  const displayImage = meal.image || "/placeholder-food.jpg";
+  const displayImage = meal.image || "/placeholder-food.png";
   const isOpen = meal.isopen || meal.isAvailable;
 
   return (
     <Card className="relative mx-auto w-full max-w-sm pt-0 overflow-hidden group hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-yellow-200">
       {/* Image with overlay */}
       <div className="relative aspect-video w-full overflow-hidden">
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute inset-0 z-10 bg-linear-to-t from-black/60 to-transparent" />
         <img
           src={displayImage}
           alt={displayName}

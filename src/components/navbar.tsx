@@ -9,9 +9,10 @@ import {
 } from "@/components/ui/navigation-menu";
 import { authClient } from "@/lib/auth";
 import Cart from "./Cart";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "components/ui/button";
 import { useEffect, useState } from "react";
+//import { createAuthClient } from "better-auth/react";
 import {
   Menu,
   X,
@@ -22,29 +23,63 @@ import {
   Home,
   ChevronDown,
 } from "lucide-react";
-import { authService } from "@/services/auth.service";
+import {
+  getCookie,
+  getCookies,
+  setCookie,
+  deleteCookie,
+  hasCookie,
+  useGetCookies,
+  useSetCookie,
+  useHasCookie,
+  useDeleteCookie,
+  useGetCookie,
+} from "cookies-next/client";
+import { getMe, getUser, UserLogOut } from "@/services/auth.service";
+
+
+
 
 
 export default function Navbar() {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [serverSession, setServerSession] = useState<any>(null);
-
- 
-
+  const [user, setUser] = useState<any>(null);
+  const pathname = usePathname();
 
   const signOut = async () => {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.push("/login");
-        },
-      },
-    });
+    await UserLogOut()
+    router.refresh();
+    router.push("/login");
+    
   };
 
-  const { data } = authClient.useSession();
-  console.log(data?.user.id);
+useEffect(()=>{
+  router.refresh();
+  const getCurrentUser = async()=>{
+    const userData = await getUser();
+   // const dummy = await getMe()
+    setUser(userData)
+    
+    console.log('THIS IS the USer in navbar',userData)
+  //  console.log("THIS IS THE DUMMY", dummy);
+  }
+  getCurrentUser();
+},[pathname])
+
+// useEffect(()=>{
+//   const getUser = async()=>{
+//     const user = await getMe()
+//     setUser(user)
+//     console.log('THIS IS THE USER',user)
+//   }
+//   getUser()
+// },[pathname])
+
+
+
+
+
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
@@ -73,30 +108,46 @@ export default function Navbar() {
                     href="/"
                     className="flex items-center gap-1 text-gray-600 hover:text-yellow-600 transition-colors"
                   >
-                    <Home className="h-4 w-4" />
+                    
                     Home
                   </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
-              {/* Provider/Register Link */}
-              {data?.user && (
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    {data.user.role  === "PROVIDER" ? (
+              {
+                user && (
+                  <NavigationMenuItem>
+                    <NavigationMenuLink asChild>
                       <Link
-                        href={`/providerProfile/${data.user.id}`}
+                        href="/MyOrders"
                         className="flex items-center gap-1 text-gray-600 hover:text-yellow-600 transition-colors"
                       >
-                        <Store className="h-4 w-4" />
+                        Your Orders
+                      </Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                )
+              }
+
+              {/* Provider/Register Link */}
+              {user && (
+                
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    {user.role  === "PROVIDER" ? (
+                      <Link
+                        href={`/providerProfile/${user.id}`}
+                        className="flex items-center gap-1 text-gray-600 hover:text-yellow-600 transition-colors"
+                      >
+                       
                         Provider Profile
                       </Link>
-                    ) : data.user.role === "CUSTOMER" ? (
+                    ) : user.role === "CUSTOMER" ? (
                       <Link
                         href="/provider"
                         className="flex items-center gap-1 text-gray-600 hover:text-yellow-600 transition-colors"
                       >
-                        <Store className="h-4 w-4" />
+                        
                         Register as Provider
                       </Link>
                     ) : null}
@@ -105,7 +156,7 @@ export default function Navbar() {
               )}
 
               {/* Admin Link */}
-              {data?.user.role === "ADMIN" && (
+              {user?.role === "ADMIN" && (
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link
@@ -120,7 +171,7 @@ export default function Navbar() {
               )}
 
               {/* Cart */}
-              {data?.user && (
+              {user && (
                 <NavigationMenuItem>
                   <Cart />
                 </NavigationMenuItem>
@@ -128,14 +179,14 @@ export default function Navbar() {
 
               {/* User Menu */}
               <NavigationMenuItem>
-                {data?.user ? (
+                {user ? (
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-2 px-3 py-1.5 bg-yellow-50 rounded-full">
                       <div className="w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
                         <User className="h-3.5 w-3.5 text-gray-900" />
                       </div>
                       <span className="text-sm font-medium text-gray-700 hidden lg:inline">
-                        {data.user.name?.split(" ")[0] || "User"}
+                        {user.name?.split(" ")[0] || "User"}
                       </span>
                     </div>
                     <Button
@@ -197,18 +248,18 @@ export default function Navbar() {
               </Link>
 
               {/* Provider/Register Link */}
-              {data?.user && (
+              {user && (
                 <>
-                  {data.user.role === "PROVIDER" ? (
+                  {user.role === "PROVIDER" ? (
                     <Link
-                      href={`/providerProfile/${data.user.id}`}
+                      href={`/providerProfile/${user.id}`}
                       className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 rounded-lg transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       <Store className="h-4 w-4" />
                       Provider Profile
                     </Link>
-                  ) : data.user.role === "CUSTOMER" ? (
+                  ) : user.role === "CUSTOMER" ? (
                     <Link
                       href="/provider"
                       className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 rounded-lg transition-colors"
@@ -222,7 +273,7 @@ export default function Navbar() {
               )}
 
               {/* Admin Link */}
-              {data?.user.role === "ADMIN" && (
+              {user?.role === "ADMIN" && (
                 <Link
                   href="/admin"
                   className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 rounded-lg transition-colors"
@@ -234,14 +285,14 @@ export default function Navbar() {
               )}
 
               {/* Cart for mobile */}
-              {data?.user && (
+              {user && (
                 <div className="px-4 py-2">
                   <Cart />
                 </div>
               )}
 
               {/* Auth buttons for mobile */}
-              {data?.user ? (
+              {user ? (
                 <button
                   onClick={() => {
                     signOut();
@@ -250,7 +301,7 @@ export default function Navbar() {
                   className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                 >
                   <LogOut className="h-4 w-4" />
-                  Logout ({data.user.name?.split(" ")[0]})
+                  Logout ({user.name?.split(" ")[0]})
                 </button>
               ) : (
                 <div className="flex flex-col gap-2 px-4">

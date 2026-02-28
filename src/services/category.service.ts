@@ -1,49 +1,71 @@
+"use server";
+import { cookies } from "next/headers";
 
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const categoryService = {
-    getCategories:async function(){
-        try {
-          const response = await fetch("http://localhost:3000/categories");
-          if (!response.ok) {
-            throw new Error("Failed to fetch categories");
-          }
-          const data = await response.json();
-          return data.categories;
-        } catch (e: any) {
-          console.error(e);
-         // throw new Error(e.message);
+  export const getCategories = async()=> {
+    const store = await cookies();
+    const token = store.get("token")?.value;
+    try {
+      const response = await fetch(`${NEXT_PUBLIC_API_URL}/categories`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch categories");
+      }
+      const data = await response.json();
+      return data.categories;
+    } catch (e: any) {
+      console.error(e);
+      // throw new Error(e.message);
+    }
+  }
+
+  export const getCategoryProviders = async(name: string) =>{
+     const store = await cookies();
+     const token = store.get("token")?.value;
+    try {
+      const response = await fetch(
+        `${NEXT_PUBLIC_API_URL}/categories/providers/${name}`,{
+          
         }
-    },
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch category Providers");
+      }
+      const data = await response.json();
+      return data;
+    } catch (e: any) {
+      console.error(e);
+      // throw new Error(e.message);
+    }
+  }
 
-    getCategoryProviders:async function(name:string){
-        try {
-          const response = await fetch(`http://localhost:3000/categories/providers/${name}`);
-          if (!response.ok) {
-            throw new Error("Failed to fetch category Providers");
-          }
-          const data = await response.json();
-          return data;
-        } catch (e: any) {
-          console.error(e);
-         // throw new Error(e.message);
+  export const getCategoryMeals = async(category: string, providerId: string)=> {
+     const store = await cookies();
+     const token = store.get("token")?.value;
+    try {
+      const response = await fetch(
+        `${NEXT_PUBLIC_API_URL}/categories/providers/${category}/${providerId}/meals`,
+        {
+          
         }
-    },
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch category meals");
+      }
+      const data = await response.json();
+      return data;
+    } catch (e: any) {
+      console.error(e);
+      //throw new Error(e.message);
+    }
+  }
 
-    getCategoryMeals:async function(category:string,providerId:string){
-        try {
-          const response = await fetch(`http://localhost:3000/categories/providers/${category}/${providerId}/meals`);
-          if (!response.ok) {
-            throw new Error("Failed to fetch category meals");
-          }
-          const data = await response.json();
-          return data;
-        } catch (e: any) {
-          console.error(e);
-          //throw new Error(e.message);
-        }
-    },
-    
-  getMeals: async (params: {
+  export const getMeals=async (params: {
     search?: string;
     category?: string;
     ratings?: string;
@@ -53,28 +75,26 @@ export const categoryService = {
     page?: string;
     limit?: string;
   }) => {
+     const store = await cookies();
+     const token = store.get("token")?.value;
     const query = new URLSearchParams();
 
-    console.log("Params in getMeals:", params.search);
+    //console.log("Params in getMeals:", params.search);
 
     Object.entries(params).forEach(([key, value]) => {
       if (value) query.append(key, value);
     });
 
-    const res = await fetch(`http://localhost:3000/meal?${query.toString()}`,{
-      cache:'no-store',
-    }
-  
-  );
+    const res = await fetch(`${NEXT_PUBLIC_API_URL}/meal?${query.toString()}`, {
+      cache: "no-store",
+    });
 
     // if (!res.ok) {
     //   console.log(res.json())
     //   throw new Error("Failed to fetch meals");
     // }
-    const data = await res.json()
-    console.log('data from category service',data)
-    return data
-  },
-
-}
+    const data = await res.json();
+    //console.log("data from category service", data);
+    return data;
+  }
 

@@ -1,8 +1,9 @@
 import MealSection from "@/components/mealSection";
 import ReviewSection from "@/components/ReviewSection";
-import { providerServices } from "@/services/provider.service";
+
 import React from "react";
 import { MapPin, Clock, Star as StarIcon } from "lucide-react";
+import { getProviderById } from "@/services/provider.service";
 
 
 
@@ -13,7 +14,8 @@ export default async function Provider({
 }) {
   const { id } = await params;
   console.log(id);
-  const data = await providerServices.getProviderById(id);
+  
+  const data = await getProviderById(id);
   const rating = data.averageRating;
 
   return (

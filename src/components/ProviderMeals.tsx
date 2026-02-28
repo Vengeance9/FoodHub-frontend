@@ -1,5 +1,5 @@
 "use client";
-import { providerServices } from "@/services/provider.service";
+import { getProviderMeals, updateProviderMeal,deleteMeal } from "@/services/provider.service";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -75,16 +75,18 @@ export default function ProviderMeals({ id }: { id: string }) {
     category: "",
   });
 
+  console.log('THIS IS THE ID IN PROVIDERMEALS', id);
+
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
   const [isAvailable, setIsAvailable] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  // Fetch meals
+  
   useEffect(() => {
     const fetchMeals = async () => {
       try {
-        const data = await providerServices.getProviderMeals(id);
+        const data = await  getProviderMeals(id);
         setItems(data.data.meals || []);
       } catch (error) {
         console.error("Failed to fetch meals:", error);
@@ -94,9 +96,10 @@ export default function ProviderMeals({ id }: { id: string }) {
       }
     };
     fetchMeals();
-  }, [id]);
-
-  // Open edit modal with meal data
+  }, []);
+  
+  console.log('THIS IS THE ITEMS', items);
+ 
   const openEditModal = (meal: MealItem) => {
     setSelectedMeal(meal);
     setMealData({
@@ -151,7 +154,7 @@ export default function ProviderMeals({ id }: { id: string }) {
     setUpdatingId(null);
   };
 
-  // Unified update function for both edits and availability toggles
+  
   const handleUpdateMeal = async (
     mealId: string,
     updates?: { isAvailable?: boolean }
@@ -210,7 +213,7 @@ export default function ProviderMeals({ id }: { id: string }) {
         return;
       }
 
-      const response = await providerServices.updateProviderMeal(
+      const response = await  updateProviderMeal(
         formDataToSend,
         mealId
       );
@@ -269,10 +272,10 @@ export default function ProviderMeals({ id }: { id: string }) {
     }
   };
 
-  const deleteMeal = async (mealId: string, mealName: string) => {
+  const deleteTheMeal = async (mealId: string, mealName: string) => {
     if (confirm(`Are you sure you want to delete "${mealName}"?`)) {
       try {
-        const response = await providerServices.deleteMeal(mealId);
+        const response = await  deleteMeal(mealId);
         
           setItems(items.filter((item) => item.id !== mealId));
           toast.success("Meal deleted successfully");
@@ -405,7 +408,7 @@ export default function ProviderMeals({ id }: { id: string }) {
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
-                    onClick={() => deleteMeal(item.id, item.meal.name)}
+                    onClick={() => deleteTheMeal(item.id, item.meal.name)}
                     disabled={updatingId === item.id}
                   >
                     <Trash2 className="w-4 h-4" />
